@@ -1,26 +1,63 @@
-#  Как работать с репозиторием финального задания
+## Описание проекта
 
-## Что нужно сделать
+Сайт с возможностью публикации фотографий котов и их достижений.
 
-Настроить запуск проекта Kittygram в контейнерах и CI/CD с помощью GitHub Actions
+### Стек технологий
 
-## Как проверить работу с помощью автотестов
+- Python 3.9
+- Django 3.2.3
+- Django REST framework 3.12.4
+- JavaScript
+- Nginx
+- Docker compose
 
-В корне репозитория создайте файл tests.yml со следующим содержимым:
-```yaml
-repo_owner: ваш_логин_на_гитхабе
-kittygram_domain: полная ссылка (https://доменное_имя) на ваш проект Kittygram
-taski_domain: полная ссылка (https://доменное_имя) на ваш проект Taski
-dockerhub_username: ваш_логин_на_докерхабе
-```
+### Запуск проекта из образов с Docker Hub
 
-Скопируйте содержимое файла `.github/workflows/main.yml` в файл `kittygram_workflow.yml` в корневой директории проекта.
+1. Создаём папку проекта `kittygram` и переходим в нее:
 
-Для локального запуска тестов создайте виртуальное окружение, установите в него зависимости из backend/requirements.txt и запустите в корневой директории проекта `pytest`.
+    ```bash
+    mkdir kittygram
+    cd kittygram
+    ```
 
-## Чек-лист для проверки перед отправкой задания
+2. В папку проекта копируем (или создаём) файл `docker-compose.production.yml` и запускаем его:
 
-- Проект Taski доступен по доменному имени, указанному в `tests.yml`.
-- Проект Kittygram доступен по доменному имени, указанному в `tests.yml`.
-- Пуш в ветку main запускает тестирование и деплой Kittygram, а после успешного деплоя вам приходит сообщение в телеграм.
-- В корне проекта есть файл `kittygram_workflow.yml`.
+    ```bash
+    sudo docker compose -f docker-compose.production.yml up
+    ```
+
+    Произойдет скачивание образов, создание и включение контейнеров, создание томов и сети.
+
+### Запуск проекта из исходников GitHub
+
+1. Клонируем себе репозиторий:
+
+    ```bash
+    git clone git@github.com:octrow/kittygram_final.git
+    ```
+
+2. Выполняем запуск:
+
+    ```bash
+    sudo docker compose -f docker-compose.yml up
+    ```
+
+    После запуска: Миграции, сбор статистики
+
+## Описание переменных окружения
+
+Ниже пример файла `.env` с переменными окружения, необходимыми для запуска приложения:
+
+```bash
+POSTGRES_DB=kittygram
+POSTGRES_USER=kittygram_user
+POSTGRES_PASSWORD=kittygram_password
+DB_NAME=kittygram
+DB_HOST=db
+DEBUG=False
+SECRET_KEY=django_secret_key_example```
+
+## Остановка оркестра контейнеров
+
+```bash
+sudo docker compose -f docker-compose.yml down
