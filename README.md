@@ -1,4 +1,4 @@
-## Описание проекта
+## Описание проекта ***kittygram***
 
 Сайт с возможностью публикации фотографий котов и их достижений.
 
@@ -7,7 +7,6 @@
 - Python 3.9
 - Django 3.2.3
 - Django REST framework 3.12.4
-- JavaScript
 - Nginx
 - Docker compose
 
@@ -44,6 +43,16 @@
 
     После запуска: Миграции, сбор статистики
 
+###### Миграции и сбор статики
+
+После запуска нужно выполнить сбор статистики и миграцию для бэкенда. Статистика фронтенда собирается во время запуска контейнера, после чего он останавливается.
+
+```bash
+sudo docker compose -f [имя-файла-docker-compose.yml] exec backend python manage.py migrate
+sudo docker compose -f [имя-файла-docker-compose.yml] exec backend python manage.py collectstatic
+sudo docker compose -f [имя-файла-docker-compose.yml] exec backend cp -r /app/collected_static/. /static/static/
+```
+
 ## Описание переменных окружения
 
 Ниже пример файла `.env` с переменными окружения, необходимыми для запуска приложения:
@@ -55,9 +64,11 @@ POSTGRES_PASSWORD=kittygram_password
 DB_NAME=kittygram
 DB_HOST=db
 DEBUG=False
-SECRET_KEY=django_secret_key_example```
+SECRET_KEY=django_secret_key_example
+```
 
 ## Остановка оркестра контейнеров
 
 ```bash
 sudo docker compose -f docker-compose.yml down
+```
